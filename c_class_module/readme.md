@@ -1,0 +1,6 @@
+- simple c module for Extending Python with C or C++
+- the important lie in **noddy.c**
+- use distutils to build a shared library
+- this demo, built with Python2.7 Python/C API
+- **this demo show you how to create a New Type in c module, used in Python**
+- **New Type can be anything, here is a basic Python class **
