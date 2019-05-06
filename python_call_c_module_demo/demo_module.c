@@ -40,6 +40,7 @@ static PyObject * _demo_function(PyObject *self, PyObject *args)
 {
     int _a, ret;
 
+    /* "i" is a fromat string, more information referance Python/C API */
     if(!PyArg_ParseTuple(args, "i", &_a))
         return NULL;
 
@@ -55,12 +56,12 @@ static PyObject * _demo_function(PyObject *self, PyObject *args)
 /*
  * Method table: <DemoModuleMethods>
  *     1: 它负责告诉Python这个模块里有哪些函数可以被Python调用。
- *     2: 导出表的名字可以随便起，每一项有4个参数，下面是各个参数含:
+ *     2: 方法表的名字可以随便起，每一项有4个参数，下面是各个参数含:
  *        ml_name   char *      name of the method
  *        ml_meth   PyCFunction pointer to the C implementation
  *        ml_flags  int         flag bits indicating how the call should be constructed
  *        ml_doc    char *      points to the contents of the docstring
- *     3: 导出表总是以{NULL, NULL, 0, NULL}结束。
+ *     3: 方法表总是以{NULL, NULL, 0, NULL}结束。
  *
  */
 static PyMethodDef DemoModuleMethods[] = {
@@ -77,12 +78,12 @@ static PyMethodDef DemoModuleMethods[] = {
 /*
  * Initialization function: <initdemo_module>
  *     1: 这个的名字不是任取的，是你的module名称添加前缀init。
- *     2: 导出函数中将模块名称与导出表进行连接。
+ *     2: 初始化函数中将模块名称与导出表进行连接。
  *
  */
 PyMODINIT_FUNC initdemo_module(void)
 {
-#ifdef HAS_UNIQUE_PyMethodDefERR
+#ifdef HAS_UNIQUE_ERR
     PyObject *m = NULL; 
     m = Py_InitModule("demo_module", DemoModuleMethods);
     if(m == NULL)
