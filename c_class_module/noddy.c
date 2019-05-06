@@ -25,7 +25,7 @@ static PyTypeObject noddy_NoddyType = {
     .tp_basicsize = sizeof(noddy_NoddyObject), /* size for Python */
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = PyType_GenericNew,
+    .tp_new = PyType_GenericNew, /* create new Noddy objects */
 };
 
 static PyMethodDef noddy_methods[] = {
