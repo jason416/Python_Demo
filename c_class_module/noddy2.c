@@ -95,7 +95,7 @@ static PyMemberDef Noddy_members[] = {
 
 
 /*
- * In Python: < a = Noddy(); a.Noddy_name() >
+ * In Python: < n = Noddy(); n.name() >
  *     - function member
  */
 static PyObject *Noddy_name(Noddy* self)
