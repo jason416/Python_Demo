@@ -1,6 +1,12 @@
 #include <Python.h>
 #include "structmember.h"
 
+/*
+ * In Python: < type Noddy >
+ *    - The Noddy type now has three data attributes, first, last, and number. 
+ *    - The first and last variables are Python strings containing first and last names. 
+ *    - The number attribute is an integer
+ */
 typedef struct {
     PyObject_HEAD
     PyObject *first; /* first name */
@@ -8,16 +14,17 @@ typedef struct {
     int number;
 } Noddy;
 
-static void
-Noddy_dealloc(Noddy* self)
+static void Noddy_dealloc(Noddy* self)
 {
-    Py_XDECREF(self->first);
-    Py_XDECREF(self->last);
+    Py_XDECREF(self->first);    /* first can be NULL */
+    Py_XDECREF(self->last);     /* last can be NULL */
     Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
-static PyObject *
-Noddy_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+/*
+ * In Python: < __new()__ >
+ */
+static PyObject *Noddy_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     Noddy *self;
 
@@ -41,8 +48,10 @@ Noddy_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     return (PyObject *)self;
 }
 
-static int
-Noddy_init(Noddy *self, PyObject *args, PyObject *kwds)
+/*
+ * In Python: < __init__() >
+ */
+static int Noddy_init(Noddy *self, PyObject *args, PyObject *kwds)
 {
     PyObject *first=NULL, *last=NULL, *tmp;
 
@@ -71,6 +80,9 @@ Noddy_init(Noddy *self, PyObject *args, PyObject *kwds)
 }
 
 
+/*
+ * Define member definitions: to expose our instance variables as attributes
+ */
 static PyMemberDef Noddy_members[] = {
     {"first", T_OBJECT_EX, offsetof(Noddy, first), 0,
      "first name"},
@@ -81,8 +93,12 @@ static PyMemberDef Noddy_members[] = {
     {NULL}  /* Sentinel */
 };
 
-static PyObject *
-Noddy_name(Noddy* self)
+
+/*
+ * In Python: < a = Noddy(); a.Noddy_name() >
+ *     - function member
+ */
+static PyObject *Noddy_name(Noddy* self)
 {
     static PyObject *format = NULL;
     PyObject *args, *result;
@@ -103,16 +119,21 @@ Noddy_name(Noddy* self)
         return NULL;
     }
 
+    /* build Python string */
     args = Py_BuildValue("OO", self->first, self->last);
     if (args == NULL)
         return NULL;
 
+    /* format python string, equals: "format" % (args) */
     result = PyString_Format(format, args);
     Py_DECREF(args);
 
     return result;
 }
 
+/*
+ * create an array of method definitions, equals: def xxx...
+ */
 static PyMethodDef Noddy_methods[] = {
     {"name", (PyCFunction)Noddy_name, METH_NOARGS,
      "Return the name, combining the first and last name"
@@ -162,6 +183,9 @@ static PyTypeObject NoddyType = {
     Noddy_new,                 /* tp_new */
 };
 
+/*
+ * In this demo, module has no methods
+ */
 static PyMethodDef module_methods[] = {
     {NULL}  /* Sentinel */
 };
@@ -169,8 +193,7 @@ static PyMethodDef module_methods[] = {
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
-PyMODINIT_FUNC
-initnoddy2(void)
+PyMODINIT_FUNC initnoddy2(void)
 {
     PyObject* m;
 
