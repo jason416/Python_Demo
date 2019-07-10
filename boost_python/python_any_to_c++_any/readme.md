@@ -1,7 +1,6 @@
 - simple c++ module for Extending Python with C++
-- the important lie in **py_variant.h**
 - use make to build a shared library
 - this demo, built with boost::python
 - **this demo show you how to convert arg from python to c++, and how to convert c++ arg to python, used boost::python!**
 - **use boost:any to store any variable from python**
-- **variant_from_python_converter and variant_to_python_converter are the most import interface!!!**
+- **variant_from_python_converter and variant_to_python_converter are the most important interface!!!**
